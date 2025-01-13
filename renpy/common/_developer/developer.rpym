@@ -124,6 +124,11 @@ screen _image_attributes():
                         transforms = renpy.layer_has_transforms(l)
                         transform_list = [ ]
 
+                        zorder_map = dict(renpy.get_zorder_list(l))
+                        show_zorder = any(zorder_map.values())
+
+                        print(zorder_map, show_zorder)
+
                         if transforms.at_list:
                             transform_list.append("show layer")
                         if transforms.camera:
@@ -145,11 +150,13 @@ screen _image_attributes():
 
                     for name in hidden:
                         $ attributes = " ".join(renpy.get_attributes(name, layer=l))
-                        text _("    [name!q] [attributes!q] (hidden)")
+                        $ z_suffix = f" (z={zorder_map.get(name)})" if show_zorder else ""
+                        text _("    [name!q] [attributes!q][z_suffix!q] (hidden)")
 
                     for name in showing:
                         $ attributes = " ".join(renpy.get_attributes(name, layer=l))
-                        text _("    [name!q] [attributes!q]")
+                        $ z_suffix = f" (z={zorder_map.get(name)})" if show_zorder else ""
+                        text _("    [name!q] [attributes!q][z_suffix!q]")
 
                     text " "
 
